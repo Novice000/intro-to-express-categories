@@ -3,7 +3,7 @@ import {getAllNotes, getNoteById, createNote, deleteNoteById, updateNoteById} fr
 import NoteAppError from '../middlewares/errorClass';
 import { Note } from '../schemas/note.schema';
 
-async function getAllNotesController(req : Request, res: Response, next: NextFunction){
+async function getAllNotesController(req : Request, res: Response, next: NextFunction):Promise<void>{
     try{
         const notes = await getAllNotes();
         res.status(200).json(notes);
@@ -12,7 +12,7 @@ async function getAllNotesController(req : Request, res: Response, next: NextFun
     }
 }
 
-async function getNoteByIdController(req: Request, res: Response, next: NextFunction){
+async function getNoteByIdController(req: Request, res: Response, next: NextFunction):Promise<void>{
     const id = req.params.id;
     try{
         const note = await getNoteById(id);
@@ -25,7 +25,7 @@ async function getNoteByIdController(req: Request, res: Response, next: NextFunc
     }
 }
 
-async function createNoteController(req: Request, res: Response, next: NextFunction){
+async function createNoteController(req: Request, res: Response, next: NextFunction):Promise<void>{
     const body: Note = req.body;
     if(!('title' in body) || !('content' in body)){
         return next(new NoteAppError('Unable to create note: Invalid body', 500));
@@ -41,7 +41,7 @@ async function createNoteController(req: Request, res: Response, next: NextFunct
     }
 }
 
-async function deleteNoteByIdController(req: Request, res: Response, next: NextFunction){
+async function deleteNoteByIdController(req: Request, res: Response, next: NextFunction):Promise<void>{
     const id = req.params.id;
     try{
         const note = await deleteNoteById(id);
@@ -54,7 +54,7 @@ async function deleteNoteByIdController(req: Request, res: Response, next: NextF
     }
 }
 
-async function updateNoteByIdController(req: Request, res: Response, next: NextFunction){
+async function updateNoteByIdController(req: Request, res: Response, next: NextFunction):Promise<void>{
     const id = req.params.id;
     const body: Partial<Note> = req.body
     try {

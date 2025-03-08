@@ -23,6 +23,7 @@ const noteSchema = new mongoose.Schema({
 }
 )
 
+//infers the type of note from the schema
 export type Note = InferSchemaType<typeof noteSchema>;
 
 export default  mongoose.model<Note>('Notes', noteSchema);

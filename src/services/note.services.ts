@@ -2,38 +2,42 @@ import mongoose from "mongoose";
 import noteModel, { Note } from "../schemas/note.schema";
 
 
-async function getAllNotes(){
+// get all notes from db
+async function getAllNotes(): Promise<Note[]> { 
     return await noteModel.find();
 }
 
-async function getNoteById(id: string){
+
+//get a note by id
+async function getNoteById(id: string):Promise<Note|null>{
     if(!mongoose.Types.ObjectId.isValid(id)){
         return null;
     }
+
     return await noteModel.findById(id);
 }
 
-async function createNote(note: Note){
+
+// create a note with title and content
+async function createNote(note: Note): Promise<Note|null> {
+
     return await noteModel.create(note);
 }
 
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * Deletes a note by its ID.
- * 
- * @param id - The unique identifier of the note to be deleted.
- * @returns The deleted note document, or null if the ID is invalid or the note does not exist.
- */
 
-/******  a331c13b-77de-411c-9805-dffd72f190c1  *******/
-async function deleteNoteById(id: string){
+//delete a note by id
+async function deleteNoteById(id: string):Promise<Note|null>{
+
     if(!mongoose.Types.ObjectId.isValid(id)){
         return null;
     }
+
     return await noteModel.findByIdAndDelete(id);
 }
 
-async function updateNoteById(id: string, note: Partial<Omit<Note, 'createdAt'>>) {
+
+//update a note with title and content
+async function updateNoteById(id: string, note: Partial<Omit<Note, 'createdAt'>>):Promise<Note|null> {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return null;
     }
