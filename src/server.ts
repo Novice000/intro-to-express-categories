@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import connectToDB from "./db";
 import noteRouter from './routes/note.routes'
-import notesErrorHandlingMiddleware from './middlewares/note.middleware'
+import {notesErrorHandlingMiddleware, loggingMiddleWare} from './middlewares/note.middleware'
 import dotenv from 'dotenv';
 dotenv.config()
 

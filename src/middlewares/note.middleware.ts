@@ -12,4 +12,20 @@ function notesErrorHandlingMiddleware(err: Error ,req: Request, res: Response, n
     }
 }
 
-export default notesErrorHandlingMiddleware
+function loggingMiddleWare(req: Request, res: Response, next: NextFunction){
+    console.log(`${req.method} ${req.url} at ${Date.now().toLocaleString()}`);
+    next();
+}
+
+function noteFormatValidator(req: Request, res: Response, next: NextFunction){
+    if(!('title' in req.body) || !('content' in req.body) || !('category' in req.body)){
+        return next(new NoteAppError('Unable to create note: Invalid body', 500));
+    }
+    next();
+}
+
+export {
+    notesErrorHandlingMiddleware,
+    loggingMiddleWare,
+    noteFormatValidator
+}

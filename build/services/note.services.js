@@ -17,34 +17,34 @@ exports.getNoteById = getNoteById;
 exports.createNote = createNote;
 exports.deleteNoteById = deleteNoteById;
 exports.updateNoteById = updateNoteById;
+exports.getNotesByCategory = getNotesByCategory;
+exports.getCategoryByName = getCategoryByName;
+exports.getCategoryById = getCategoryById;
 const mongoose_1 = __importDefault(require("mongoose"));
 const note_schema_1 = __importDefault(require("../schemas/note.schema"));
+const category_schema_1 = __importDefault(require("../schemas/category.schema"));
+// get all notes from db
 function getAllNotes() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield note_schema_1.default.find();
+        return yield note_schema_1.default.find().populate("category");
     });
 }
+//get a note by id
 function getNoteById(id) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
             return null;
         }
-        return yield note_schema_1.default.findById(id);
+        return yield note_schema_1.default.findById(id).populate("category");
     });
 }
+// create a note with title and content
 function createNote(note) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield note_schema_1.default.create(note);
+        return (yield note_schema_1.default.create(note)).populate("category");
     });
 }
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * Deletes a note by its ID.
- *
- * @param id - The unique identifier of the note to be deleted.
- * @returns The deleted note document, or null if the ID is invalid or the note does not exist.
- */
-/******  a331c13b-77de-411c-9805-dffd72f190c1  *******/
+//delete a note by id
 function deleteNoteById(id) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
@@ -53,6 +53,7 @@ function deleteNoteById(id) {
         return yield note_schema_1.default.findByIdAndDelete(id);
     });
 }
+//update a note with title and content
 function updateNoteById(id, note) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
@@ -68,5 +69,20 @@ function updateNoteById(id, note) {
             existingNote.content = note.content;
         existingNote.updatedAt = new Date();
         return yield existingNote.save();
+    });
+}
+function getNotesByCategory(categoryId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield note_schema_1.default.find({ category: categoryId }).populate("category");
+    });
+}
+function getCategoryByName(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield category_schema_1.default.findOne({ name });
+    });
+}
+function getCategoryById(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield category_schema_1.default.findById(id);
     });
 }

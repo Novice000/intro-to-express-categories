@@ -13,6 +13,11 @@ const noteSchema = new mongoose_1.default.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'Categories',
+        required: true
+    },
     createdAt: {
         type: Date,
         required: true,
@@ -25,4 +30,4 @@ const noteSchema = new mongoose_1.default.Schema({
         default: Date.now
     },
 });
-exports.default = mongoose_1.default.model('Notes', noteSchema);
+exports.default = mongoose_1.default.model('NotesWithCategories', noteSchema);
