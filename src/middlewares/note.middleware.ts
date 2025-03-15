@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import NoteAppError from './errorClass';
 import colors from 'colors';
+import { updateNoteSchema, createNoteSchema } from './validationSchema';
 
 function notesErrorHandlingMiddleware(err: Error ,req: Request, res: Response, next: NextFunction){
     if(err instanceof NoteAppError){
@@ -42,14 +43,10 @@ function loggingMiddleWare(req: Request, res: Response, next: NextFunction) {
 }
 
 function noteFormatValidator(req: Request, res: Response, next: NextFunction){
-    if(req.method === 'POST'){
-        if(!('title' in req.body) || !('content' in req.body) || !('category' in req.body)){
-        return next(new NoteAppError('Unable to create note: Invalid body', 400));
-        }
-    }else if(req.method === 'PUT'){
-        if(!('title' in req.body) && !('content' in req.body) && !('category' in req.body)){
-        return next(new NoteAppError('Unable to update note: Invalid body', 400));
-        }
+    const schema = req.method === 'POST' ? createNoteSchema : updateNoteSchema;
+    const result = schema.validate(req.body);
+    if(result.error){
+      next(new NoteAppError(`Validation Error: ${result.error.message}`, 400));
     }
     next();
 }

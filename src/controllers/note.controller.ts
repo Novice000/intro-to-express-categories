@@ -58,7 +58,6 @@ async function createNoteController(
         // Convert category name to lowercase for consistency
         const categoryName = body.category.toLowerCase();
 
-        // Use findOneAndUpdate to prevent duplicate key errors
         let category = await categoryModel.findOneAndUpdate(
             { category: categoryName }, // Search for existing category
             { category: categoryName },
