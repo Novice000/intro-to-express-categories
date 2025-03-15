@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(loggingMiddleWare);
 app.use('/api/notes', noteRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction)=> {

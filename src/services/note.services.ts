@@ -37,7 +37,7 @@ async function updateNoteById(id: string, note: INote): Promise<INote | null> {
     return null;
   }
 
-  const existingNote = await noteModel.findById(id);
+  const existingNote = await noteModel.findById(id).populate("category");
   if (!existingNote) {
     return null;
   }
